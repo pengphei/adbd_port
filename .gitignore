@@ -1,5 +1,18 @@
-*~
+.DS_Store
+.sconsign.dblite
+*.creator
+*.includes
+*.files
+*.config
+*.swp
 *.o
-*.a
-adb/adbd
+*.lo
+*.la
+*.exe
 
+*.dsw
+*.ncb
+*.opt
+*.plg
+
+target/

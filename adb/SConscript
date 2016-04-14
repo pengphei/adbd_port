@@ -1,0 +1,71 @@
+#
+# adbd building script
+#
+
+Import('genv')
+
+env = Environment()
+env["CC"] = genv["CC"]
+env["CXX"] = genv["CXX"]
+env["AS"] = genv["AS"]
+env["AR"] = genv["AR"]
+env["LINK"] = genv["LINK"]
+env["OBJCOPY"] = genv["OBJCOPY"]
+env["NM"] = genv["NM"]
+env["ENV"] = genv["ENV"]
+
+env["LIBPATH"] = [
+	genv["out"],
+]
+
+env["CCFLAGS"] = [
+	"-O2",
+	"-g",
+	"-DADB_HOST=0",
+	"-Wall",
+	"-Wno-unused-parameter",
+	"-D_XOPEN_SOURCE",
+	"-D_GNU_SOURCE",
+	
+	# based on kernel config
+	"-DANDROID_GADGET=1",
+	
+	"-DHAVE_PTHREADS=1",
+]
+env["LINKFLAGS"] = [
+]
+
+
+dst = "adbd"
+
+inc = [
+    ".",
+    "../include"
+]
+
+src = [
+	"adb.c",
+	"backup_service.c",
+	"fdevent.c",
+	"transport.c",
+	"transport_local.c",
+	"transport_usb.c",
+	"sockets.c",
+	"services.c",
+	"file_sync_service.c",
+	"jdwp_service.c",
+	"framebuffer_service.c",
+	"remount_service.c",
+	"usb_linux_client.c",
+	"log_service.c",
+	"utils.c",
+]
+
+lib = [
+    "pthread",
+    "cutils",
+	"c",
+]
+
+adbd_prog = env.Program(target=dst, source=src, LIBS=lib, CPPPATH=inc)
+Return("adbd_prog")

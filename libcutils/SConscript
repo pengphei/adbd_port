@@ -1,0 +1,79 @@
+#
+# cutils building script
+#
+
+Import('genv')
+
+env = Environment()
+env["CC"] = genv["CC"]
+env["CXX"] = genv["CXX"]
+env["AS"] = genv["AS"]
+env["AR"] = genv["AR"]
+env["LINK"] = genv["LINK"]
+env["OBJCOPY"] = genv["OBJCOPY"]
+env["NM"] = genv["NM"]
+env["ENV"] = genv["ENV"]
+
+env["LIBPATH"] = [
+	genv["out"],
+]
+
+env["CCFLAGS"] = [
+    "-DHAVE_PTHREADS=1",
+    "-DANDROID_SMP=1",
+    "-D__USE_GNU",
+    "-D_GNU_SOURCE",
+    "-DHAVE_SYS_UIO_H",
+]
+
+dst = "cutils"
+inc = [
+    ".",
+    "../include",
+]
+src = [
+	"array.c",
+	"hashmap.c",
+	"atomic.c",
+	"native_handle.c",
+	"buffer.c",
+	"socket_inaddr_any_server.c",
+	"socket_local_client.c",
+	"socket_local_server.c",
+	"socket_loopback_client.c",
+	"socket_loopback_server.c",
+	"socket_network_client.c",
+	"sockets.c",
+	"config_utils.c",
+	"cpu_info.c",
+	"load_file.c",
+	"list.c",
+	"open_memstream.c",
+	"strdup16to8.c",
+	"strdup8to16.c",
+	"record_stream.c",
+	"process_name.c",
+	"properties.c",
+	"threads.c",
+	"sched_policy.c",
+	"iosched_policy.c",
+	"str_parms.c",
+    "abort_socket.c",
+    "selector.c",
+    "tztime.c",
+    #"zygote.c",
+    "mq.c",
+	"android_reboot.c",
+	"partition_utils.c",
+	"uevent.c",
+	"qtaguid.c",
+	"klog.c",
+	"memory.c",
+]
+
+lib = [
+    "pthread",
+]
+
+cutils_lib = env.StaticLibrary(target=dst, source=src, LIBS=lib, CPPPATH=inc)
+Return("cutils_lib")
